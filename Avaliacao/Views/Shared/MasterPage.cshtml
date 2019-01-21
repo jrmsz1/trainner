@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="iso-8859-1" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+
+
+    
+
+    @{
+        string nomeUser = string.Empty;
+
+        if (Session.Count == 2)
+        {
+            nomeUser = Session["nomeUser"].ToString();
+        }
+        /*
+         *POR COOKIES
+         * if (Request.Cookies["LoginCookie"]!=null)
+         {
+             nomeUser = Request.Cookies["LoginCookie"]["nomeUser"];
+         }*/
+    }
+
+
+    @if (nomeUser != string.Empty)
+    {
+        <div id="header" class="cabecalho headerTitulo">
+            <p style="height:0px">Bem vindo @nomeUser</p>
+            @Html.ActionLink("Sair", "LogOut", "Home", null, new { @class = "sair" })
+        </div>
+    }
+    else
+    {
+        <div id="header" class="cabecalho headerTitulo">
+            <p style="height:0px">Processo de Avaliação - Oziel Vilalba Junior</p>                      
+            </div>
+    }
+
+
+    @if (nomeUser != string.Empty)
+    {
+        <nav>
+            <ul class="menu">
+                <li> @Html.ActionLink("Home", "Lista", "Aluno")</li>
+                <li>
+                    @Html.ActionLink("Cadastro Alunos", "Lista", "Aluno")
+                    <ul>
+                        <li>@Html.ActionLink("Listagem", "Lista", "Aluno")</li>
+                    </ul>
+
+                </li>
+
+                <li>
+                    @Html.ActionLink("Cadastro de Cidades", "Lista", "Cidade")
+                    <ul>
+                        <li>@Html.ActionLink("Listagem", "Lista", "Cidade")</li>
+                        <li>@Html.ActionLink("Consultar CEP", "ConsultaCEP", "Cidade")</li>
+                        <li>@Html.ActionLink("Carregar Cidades", "LoadCidades", "Cidade")</li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Alunos por Cidades</a></li>
+                <!-- eu já tratei a codificação no web.config-->
+                <li>
+                    <a href="#">Relatórios</a>
+                    <ul>
+                        <li>@Html.ActionLink("Alunos", "Aluno", "Relatorio")</li>
+                        <li>@Html.ActionLink("Cidades", "Cidade", "Relatorio")</li>
+                        <li>@Html.ActionLink("Alunos por Cidade", "AluCid", "Relatorio")</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Gráficos</a>
+                    <ul>
+                 
+                        <li>@Html.ActionLink("Alunos por Cidade", "Index", "Grafico")</li>
+                    </ul>
+                </li>
+                <!--li>
+                <a href="#">SubMenu</a>
+                <ul>
+                    <li><a href="#">sub1</a></li>
+                    <li><a href="#">sub2</a></li>
+                </ul>
+                </li-->
+
+                <li>@Html.ActionLink("Contato", "Contato", "Home")</li>
+            </ul>
+        </nav>
+    }
+
+    <div class="body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/inputmask")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿CREATE DATABASE "dbTrainner"
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+
+CREATE TABLE public."Usuarios"
+(
+    "usuarioId" serial NOT NULL,
+    nome character(60) NOT NULL,
+    cpf character(11),
+    sexo character(1),
+    telefone character(12),
+    data_cadastro date,
+    cidade character varying(60),
+    email character varying(60),
+    senhacripto character varying(128),
+	codibgecidade character(7),
+    CONSTRAINT "Pk_usuario" PRIMARY KEY ("usuarioId")
+)
+WITH (
+    OIDS = FALSE
+);
+
+
+
+ALTER TABLE public."Usuarios"
+    OWNER to postgres;
+
+CREATE INDEX "index_nomeUser"
+    ON public."Usuarios" USING btree
+    (nome ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+CREATE INDEX "index_cpfUser"
+    ON public."Usuarios" USING hash
+    (cpf)
+    TABLESPACE pg_default;
+
+--INSERT INTO "Usuarios" ("nome", "cpf") Values ('Joao de teste', '12345678901');
+--INSERT INTO "Usuarios" ("nome", "cpf") Values ('Maria de teste', '98765432101');
+
+
+
+CREATE TABLE public."Alunos"
+(
+    "alunoId" serial NOT NULL,
+    nome character(60) NOT NULL,
+    rg character(10),
+	cpf character(11),
+	data_nascimento date,
+	logradouro character varying(60),
+	nro character varying(10),
+	complemento character varying(60),
+	bairro character varying(60),
+	cidade character varying(60),
+	codibgecidade character(7),
+	uf character(2),
+	cep character(8),
+	codPais char(4),
+	matricula char(20),
+    sexo character(1),
+	telefoneMov character(12),
+    telefoneCom character(12), 
+	telefoneRes character(12),
+    data_cadastro date,
+    pessoascontatojson text,
+    ultmodificacao date,
+    "usuarioIdmod" integer,
+	email character varying(60),
+    
+    CONSTRAINT "Pk_aluno" PRIMARY KEY ("alunoId")
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public."Alunos"
+    OWNER to postgres;
+
+CREATE INDEX "index_nomeAluno"
+    ON public."Alunos" USING btree
+    (nome ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+CREATE INDEX "index_cpfAluno"
+    ON public."Alunos" USING hash
+    (cpf)
+    TABLESPACE pg_default;
+
+CREATE INDEX "index_codibgecidadeAluno"
+    ON public."Alunos" USING btree
+    (codibgecidade)
+    TABLESPACE pg_default;
+
+CREATE TABLE public."Cidades"
+(
+    "cMun" character(7) NOT NULL,
+    "xMun" character(60) NOT NULL,
+    CONSTRAINT "pk_cMun" PRIMARY KEY ("cMun")
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public."Cidades"
+    OWNER to postgres;
+
+ALTER TABLE public."Cidades"
+    ADD COLUMN uf character(2);
+
+ALTER TABLE public."Cidades"
+    ADD COLUMN cep character(8);
+
+CREATE INDEX index_xmun
+    ON public."Cidades" USING btree
+    ("xMun" ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+
+CREATE TABLE public."UFs"
+(  
+
+    uf character(2) NOT NULL,
+    nome character(20),
+    cuf smallint,
+    CONSTRAINT pk_uf PRIMARY KEY (uf)    
+)
+WITH (
+    OIDS = FALSE
+);
+
+ALTER TABLE public."UFs"
+    OWNER to postgres;
+
+ALTER TABLE public."Cidades"
+    ADD CONSTRAINT fk_cid_by_uf FOREIGN KEY (uf)
+    REFERENCES public."UFs" (uf) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+CREATE INDEX index_cid_uf
+    ON public."Cidades" USING btree
+    (uf AS NULLS LAST, "xMun" AS NULLS LAST)
+    TABLESPACE pg_default;
+
+CREATE TABLE public."logSystem"
+(
+	"logId" integer NOT NULL DEFAULT nextval('"logSystem_logId_seq"'::regclass),
+    "usuarioId" integer,
+    "dataLog" timestamp with time zone,
+    entidade character(20) COLLATE pg_catalog."default",
+    "tipoLog" character(3) COLLATE pg_catalog."default",
+    
+    CONSTRAINT pk_log PRIMARY KEY ("logId")
+)
+WITH (
+    OIDS = FALSE
+)
+
+ALTER TABLE public."logSystem"
+    OWNER to postgres;
+
+
+ALTER TABLE public."Usuarios"
+    ADD COLUMN ufusuario character(2);

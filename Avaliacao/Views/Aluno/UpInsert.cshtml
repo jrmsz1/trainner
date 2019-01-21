@@ -1,0 +1,369 @@
+﻿@model Avaliacao.Models.Aluno.Aluno
+@using Avaliacao.Controllers.Util
+
+
+<h2>Aluno</h2>
+@Html.ActionLink("Voltar", null, null, null, new { href = Request.UrlReferrer })
+@using (Html.BeginForm("UpInsert", "Aluno", FormMethod.Post, new { id = "alunoform", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.TextBox("modeid", ViewBag.modeid as string)
+
+    <div class="form-add" id="divInfo">
+
+        <div class="form-inside">
+
+            <div class="form-white-background">
+
+                <div class="form-title-row">
+                    <h1>@ViewBag.Title</h1>
+                </div>
+
+                <!-- Se Html.ValidationSummary(true, não irá apresentar os erros customizados do Controller-->
+                <!--Erros customizados do controller-->
+                @if (ViewData.ModelState.ContainsKey("CustomError"))
+                {
+                    <div style="border:1px solid red">
+                        @Html.ValidationMessage("CustomError")
+                    </div>
+                }
+
+                <div class="form-row-add" id="idAluno">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.id)
+                        @Html.EditorFor(model => model.id)
+                        @Html.ValidationMessageFor(model => model.id)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.nome)
+                        @Html.EditorFor(model => model.nome)
+                        @Html.ValidationMessageFor(model => model.nome)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.rg)
+                        @Html.EditorFor(model => model.rg, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.rg)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cpf)
+                        @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.cpf)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.data_nascimento)
+                        @Html.EditorFor(model => model.data_nascimento, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.data_nascimento)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cep)
+                        @Html.EditorFor(model => model.cep, new { htmlAttributes = new { @style = "width: 180px;" } }) <button id="btnConsultaCEP" type="button" onclick="FindCEP()" style="display:inline; padding: 3px 3px;">Consultar</button>
+                        <div id="loading" style="border:1px solid red" hidden />
+                        @Html.ValidationMessageFor(model => model.cep)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.logradouro)
+                        @Html.EditorFor(model => model.logradouro)
+                        @Html.ValidationMessageFor(model => model.logradouro)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.nro)
+                        @Html.EditorFor(model => model.nro, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.nro)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.complemento)
+                        @Html.EditorFor(model => model.complemento)
+                        @Html.ValidationMessageFor(model => model.complemento)
+                    </label>
+                </div>
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.bairro)
+                        @Html.EditorFor(model => model.bairro)
+                        @Html.ValidationMessageFor(model => model.bairro)
+                    </label>
+                </div>
+
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.uf)
+                        @Html.DropDownListFor(model => model.uf,
+new List<SelectListItem>
+{
+                            new SelectListItem { Value = "AC" , Text = "Acre" },
+                            new SelectListItem { Value = "AL" , Text = "Alagoas" },
+                            new SelectListItem { Value = "AM" , Text = "Amazonas" },
+                            new SelectListItem { Value = "AP" , Text = "Amapá" },
+                            new SelectListItem { Value = "BA" , Text = "Bahia" },
+                            new SelectListItem { Value = "CE" , Text = "Ceará" },
+                            new SelectListItem { Value = "DF" , Text = "Distrito Federal" },
+                            new SelectListItem { Value = "ES" , Text = "Espírito Santo" },
+                            new SelectListItem { Value = "GO" , Text = "Goiás" },
+                            new SelectListItem { Value = "MA" , Text = "Maranhão" },
+                            new SelectListItem { Value = "MG" , Text = "Minas Gerais" },
+                            new SelectListItem { Value = "MS" , Text = "Mato Grosso do Sul" },
+                            new SelectListItem { Value = "MT" , Text = "Mato Grosso" },
+                            new SelectListItem { Value = "PA" , Text = "Pará" },
+                            new SelectListItem { Value = "PB" , Text = "Paraíba" },
+                            new SelectListItem { Value = "PE" , Text = "Pernambuco" },
+                            new SelectListItem { Value = "PI" , Text = "Piauí" },
+                            new SelectListItem { Value = "PR" , Text = "Paraná" },
+                            new SelectListItem { Value = "RJ" , Text = "Rio de Janeiro" },
+                            new SelectListItem { Value = "RN" , Text = "Rio Grande do Norte" },
+                            new SelectListItem { Value = "RO" , Text = "Rondônia" },
+                            new SelectListItem { Value = "RR" , Text = "Roraima" },
+                            new SelectListItem { Value = "RS" , Text = "Rio Grande do Sul" },
+                            new SelectListItem { Value = "SC" , Text = "Santa Catarina" },
+                            new SelectListItem { Value = "SE" , Text = "Sergipe" },
+                            new SelectListItem { Value = "SP" , Text = "São Paulo" },
+                            new SelectListItem { Value = "TO" , Text = "Tocantins" },
+                            new SelectListItem { Value = "EX" , Text = "Exterior" }
+         },
+         new { @class = "form-inside select", @onchange = "FillCity()" }
+         )
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cidade)
+                        @Html.DropDownListFor(m => m.codibgecidade,
+new SelectList(ViewBag.ListaCidade, "cMun", "xMun"),
+"Selecione a cidade",
+new { @class = "form-inside select", @onchange = "AlterCity()" })
+                        @Html.ValidationMessageFor(m => m.codibgecidade)
+                        @Html.ValidationMessageFor(model => model.cidade)
+                    </label>
+                </div>
+
+                <div id="divHidden">
+                    @Html.EditorFor(model => model.cidade)
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.matricula)
+                        @Html.EditorFor(model => model.matricula)
+                        @Html.ValidationMessageFor(model => model.matricula)
+                    </label>
+                </div>
+
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.sexo)
+                        @Html.DropDownListFor(model => model.sexo,
+new List<SelectListItem>
+{
+                                new SelectListItem { Value = "M" , Text = "Masculino" },
+                                new SelectListItem { Value = "F" , Text = "Feminino" }
+}, new { htmlAttributes = new { @class = "form-inside select " } }
+)
+
+                        @Html.ValidationMessageFor(model => model.sexo)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.email)
+                        @Html.EditorFor(model => model.email)
+                        @Html.ValidationMessageFor(model => model.email)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.telefonemov)
+                        @Html.EditorFor(model => model.telefonemov, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.telefonemov)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.telefonecom)
+                        @Html.EditorFor(model => model.telefonecom, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.telefonecom)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.data_cadastro)
+                        @Html.EditorFor(model => model.data_cadastro, new { htmlAttributes = new { @style = "width: 180px;" } })
+                        @Html.ValidationMessageFor(model => model.data_cadastro)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <button type="button" onclick="SendForm()">Confirmar</button>
+                </div>
+
+                @if (@ViewBag.Message != null)
+                {
+                    <div style="border:1px solid red">
+                        @ViewBag.Message
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+
+}
+
+
+@section Scripts {
+    <script>
+
+        $('#nome').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]*$"); //Daria para fazer um Html.RegexFor
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        $(document).ajaxStart(function () {
+            $("div#loading").text("Pesquisando nos correios...");
+            $("div#loading").show();
+        });
+
+        $(document).ajaxComplete(function () {
+            $("div#loading").text("");
+            $("div#loading").hide();
+        });
+
+
+        $(document).ready(function () {
+
+            $("#modeid").hide();
+            $("#divHidden").hide();            
+            $("#idAluno").hide();
+
+            $("#cep").inputmask("mask", { "mask": "99.999-999" });
+            $("#cpf").inputmask("mask", { "mask": "999.999.999-99" });
+            $("#data_nascimento").inputmask("mask", { "mask": "99/99/9999" });
+            
+
+
+            $("#telefonemov").inputmask("mask", { "mask": "(99) 99999-9999" });
+            $("#telefonecom").inputmask("mask", { "mask": "(99) 99999-9999" });
+            if ($("#modeid").val().indexOf("DEL") == 0) {
+                $("#divInfo :input:not(:button)").attr("disabled", true);
+            }
+        });
+
+
+        function SendForm() {
+
+            $("#cep").inputmask("mask", { "mask": "" });
+            $("#cpf").inputmask("mask", { "mask": "" });
+            $("#telefonemov").inputmask("mask", { "mask": "" });
+            $("#telefonecom").inputmask("mask", { "mask": "" });
+
+            $("#alunoform").submit();
+        };
+
+        function AlterCity() {
+            var valor = $("#codibgecidade :selected").text();
+            $("#cidade").val(valor);
+        };
+
+
+        function FillCity() {
+            var stateId = $('#uf').val();
+            $.ajax({
+                url: '/Home/FillCity',
+                type: "GET",
+                dataType: "JSON",
+                data: { estado: stateId },
+                success: function (cities) {
+                    $('#codibgecidade').html(""); // clear before appending new list
+                    $("#cidade").val('');
+                    $.each(cities, function (i, city) {
+
+                        if ($("#cidade").val() === '') {
+                            $("#cidade").val(city.xMun);
+                        }
+
+                        $('#codibgecidade').append(
+                            $('<option></option>').val(city.cMun).html(city.xMun));
+                    });
+                }
+            });
+        }
+
+        function FindCEP() {
+
+            var cepId = $('#cep').val().length;
+
+            if (cepId == 10) {
+
+                $("#divHidden").hide();
+
+                var cep = $('#cep').val();
+
+                $.ajax({
+                    url: '/Cidade/FindCEP',
+                    type: "GET",
+                    dataType: "JSON",
+                    async: true,
+                    data: { cepParam: cep },
+                    success: function (resposta) {
+
+                        var correios = JSON.parse(resposta);
+
+                        $("#logradouro").val(correios.end);
+                        $("#complemento").val(correios.complemento);
+                        $("#bairro").val(correios.bairro);
+                        $("#uf").val(correios.uf);
+                        $("#cidade").text(correios.cidade);
+                      
+                    }
+                });
+
+            } else {
+
+                Alert("Atenção digite o CEP corretamente.")
+                $('#cep').focus();
+
+            }
+        }
+
+
+    </script>
+}

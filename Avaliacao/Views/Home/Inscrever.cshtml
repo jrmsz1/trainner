@@ -1,0 +1,241 @@
+﻿@model Avaliacao.Models.Usuario
+@using Avaliacao.Controllers.Util
+
+@{
+    /**/
+
+    ViewBag.Title = "Inscreva-se";
+}
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("Inscrever", "Home", FormMethod.Post, new { id = "signupform", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-add">
+
+        <div class="form-inside">
+
+            <div class="form-white-background">
+
+                <div class="form-title-row">
+                    <h1>Novo usuário</h1>
+                </div>
+
+                <!-- Se Html.ValidationSummary(true, não irá apresentar os erros customizados do Controller-->                
+
+                <!--Erros customizados do controller-->
+                @if (ViewData.ModelState.ContainsKey("CustomError"))
+                {
+                    <div style = "border:1px solid red" >
+                       @Html.ValidationMessage("CustomError")
+                    </div>
+                }
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.nome)
+                        @Html.EditorFor(model => model.nome)
+                        @Html.ValidationMessageFor(model => model.nome)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cpf)
+                        @Html.EditorFor(model => model.cpf, new { htmlAttributes = new { @style = "width: 150px;" } })
+                        @Html.ValidationMessageFor(model => model.cpf)
+                    </label>
+                </div>
+
+
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.sexo)
+                        @Html.DropDownListFor(model => model.sexo,
+new List<SelectListItem>
+{
+                                new SelectListItem { Value = "M" , Text = "Masculino" },
+                                new SelectListItem { Value = "F" , Text = "Feminino" }
+}, new { htmlAttributes = new { @class = "form-inside select" } }
+)
+
+                        @Html.ValidationMessageFor(model => model.sexo)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.telefone)
+                        @Html.EditorFor(model => model.telefone, new { htmlAttributes = new { @style = "width: 150px;" } })
+                        @Html.ValidationMessageFor(model => model.telefone)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.ufusuario)
+                        @Html.DropDownListFor(model => model.ufusuario,
+new List<SelectListItem>
+{
+                            new SelectListItem { Value = "AC" , Text = "Acre" },
+                            new SelectListItem { Value = "AL" , Text = "Alagoas" },
+                            new SelectListItem { Value = "AM" , Text = "Amazonas" },
+                            new SelectListItem { Value = "AP" , Text = "Amapá" },
+                            new SelectListItem { Value = "BA" , Text = "Bahia" },
+                            new SelectListItem { Value = "CE" , Text = "Ceará" },
+                            new SelectListItem { Value = "DF" , Text = "Distrito Federal" },
+                            new SelectListItem { Value = "ES" , Text = "Espírito Santo" },
+                            new SelectListItem { Value = "GO" , Text = "Goiás" },
+                            new SelectListItem { Value = "MA" , Text = "Maranhão" },
+                            new SelectListItem { Value = "MG" , Text = "Minas Gerais" },
+                            new SelectListItem { Value = "MS" , Text = "Mato Grosso do Sul" },
+                            new SelectListItem { Value = "MT" , Text = "Mato Grosso" },
+                            new SelectListItem { Value = "PA" , Text = "Pará" },
+                            new SelectListItem { Value = "PB" , Text = "Paraíba" },
+                            new SelectListItem { Value = "PE" , Text = "Pernambuco" },
+                            new SelectListItem { Value = "PI" , Text = "Piauí" },
+                            new SelectListItem { Value = "PR" , Text = "Paraná" },
+                            new SelectListItem { Value = "RJ" , Text = "Rio de Janeiro" },
+                            new SelectListItem { Value = "RN" , Text = "Rio Grande do Norte" },
+                            new SelectListItem { Value = "RO" , Text = "Rondônia" },
+                            new SelectListItem { Value = "RR" , Text = "Roraima" },
+                            new SelectListItem { Value = "RS" , Text = "Rio Grande do Sul" },
+                            new SelectListItem { Value = "SC" , Text = "Santa Catarina" },
+                            new SelectListItem { Value = "SE" , Text = "Sergipe" },
+                            new SelectListItem { Value = "SP" , Text = "São Paulo" },
+                            new SelectListItem { Value = "TO" , Text = "Tocantins" },
+                            new SelectListItem { Value = "EX" , Text = "Exterior" }
+         },
+         new { @class = "form-inside select", @onchange = "FillCity()" }
+         )
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cidade)
+                        @Html.DropDownListFor(m => m.codibgecidade,
+new SelectList(ViewBag.ListaCidade, "cMun", "xMun"),
+"Selecione a cidade",
+new { @class = "form-inside select", @onchange = "AlterCity()" })
+                        @Html.ValidationMessageFor(m => m.codibgecidade)
+                        @Html.ValidationMessageFor(model => model.cidade)
+                    </label>
+                </div>
+
+                <div id="divHidden">
+                    @Html.EditorFor(model => model.cidade)
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.email)
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @type = "email" } })
+                        @Html.ValidationMessageFor(model => model.email)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        <span>Senha</span>
+                        <input type="password" name="senhacripto">
+                        @Html.ValidationMessageFor(model => model.senhacripto)
+                    </label>
+                </div>
+
+
+                <div class="form-row-add">
+                    <button type="button" onclick="SendForm()">Confirmar</button>
+                </div>
+
+                @if (@ViewBag.Message != null)
+                {
+                    <div style="border:1px solid red">
+                        @ViewBag.Message
+                    </div>
+                }
+
+            </div>
+
+            </div>
+    </div>
+
+    @Html.ActionLink("Voltar", null, null, null, new { href = Request.UrlReferrer })
+}
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function ()
+        {
+            $("#telefone").inputmask("mask", { "mask": "(99) 9999-99999" });
+            $("#cpf").inputmask("mask", { "mask": "999.999.999-99" }, { reverse: true });            
+
+            $("#divHidden").hide();                   
+            //https://stackoverflow.com/questions/1591910/how-to-focus-on-a-form-input-text-field-on-page-load-using-jquery
+            $('#nome').focus()
+           /* $("#cep").inputmask("mask", { "mask": "99999-999" });
+            $("#nascimento").inputmask("mask", { "mask": "99/99/9999" });
+            $("#preco").inputmask("mask", { "mask": "999.999,99" }, { reverse: true });
+            $("#valor").inputmask("mask", { "mask": "#.##9,99" }, { reverse: true });
+            $("#ip").inputmask("mask", { "mask": "999.999.999.999" });*/
+        });
+
+        $('#nome').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]*$"); //Daria para fazer um Html.RegexFor
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+        });
+
+        function SendForm() {
+            
+            //$("#cpf").unmask();
+            //$("#cpf").inputmask("remove");
+     
+            $("#cpf").inputmask("mask", { "mask": "" });
+            $("#telefone").inputmask("mask", { "mask": "" });
+            //$(':input', '#signupform').removeAttr('mask')
+            $("#signupform").submit();
+        };
+
+        function AlterCity() {
+            var valor = $("#codibgecidade :selected").text();
+            $("#cidade").val(valor);
+        };
+
+        function FillCity() {
+            var stateId = $('#ufusuario').val();
+            $.ajax({
+                url: '/Home/FillCity',
+                type: "GET",
+                dataType: "JSON",
+                data: { estado: stateId },
+                success: function (cities) {
+                    $('#codibgecidade').html(""); // clear before appending new list        
+                    $("#cidade").val('');
+                    $.each(cities, function (i, city) {
+
+                        if ($("#cidade").val() === '') {
+                            $("#cidade").val(city.xMun);
+                        }
+
+                        $('#codibgecidade').append(
+                            $('<option></option>').val(city.cMun).html(city.xMun));
+                    });
+                }
+            });
+        }
+
+       
+
+    </script>
+}

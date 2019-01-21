@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Relatório Alunos";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Alunos", "Relatorio"))
+{
+<div class="form-login">
+
+    <div class="form-log-in-with-email">
+
+        <div class="form-white-background">
+
+            <div class="form-row-add">
+                <label>
+                    @Html.Label("Listage de alunos")
+
+                </label>
+
+                <button id="submitButton" type="submit">Gerar PDF</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,52 @@
+﻿@model Avaliacao.Models.UsuarioLoginView
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-login">
+
+        <div class="form-log-in-with-email">
+
+            <div class="form-white-background">
+
+                <div class="form-title-row">
+                    <h1>Log in</h1>
+                </div>
+
+                <div class="form-row">
+                    <label>
+                        <span>Email</span>
+                        <input type="email" name="email" />
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <label>
+                        <span>Senha</span>
+                        <input type="password" name="senhacripto" />
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <button type="submit" value="Login">Entrar</button>
+                </div>
+
+                @if (@ViewBag.Message != null)
+                {
+                    <div style="border:1px solid red">
+                        @ViewBag.Message
+                    </div>
+                }
+
+            </div>
+
+            @Html.ActionLink("Me inscrever", "Inscrever", "Home", null, new { @class = "form-create-an-account" })
+
+        </div>
+
+    </div>
+}

@@ -1,0 +1,402 @@
+﻿body,
+
+
+html {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+}
+
+body {    
+    background-size: 100%;
+    background-attachment: fixed;
+}
+
+a, a img {
+    text-decoration: none;
+    border: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+h2 {
+    margin-bottom: 0px;
+    margin-top:0px;
+}
+
+.principal {
+    width: 960px;
+    color: #444;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+
+
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.cabecalho,
+.logo,
+.rodape,
+.menu {
+    width: 100%;
+    display: block;
+    clear: both;
+}
+
+.cabecalho {
+    background: #19b5fe;
+    clear: both;
+    position: relative;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.headerTitulo {
+    float: left;
+    font: normal 24px 'Open Sans', sans-serif;
+    color: #fff;
+    line-height: 100%;
+}
+
+.sair {
+    font: normal 14px 'Open Sans', sans-serif;
+    color: #4400FF;
+    margin-left: 0.83em;
+    line-height: 100%;
+}
+
+.pesquisa span{
+    width:50px;
+}
+
+.menu {
+    list-style: none;    
+    float: left;
+    height:1em;
+}
+
+    .menu li {
+        position: relative;
+        float: left;
+    }
+
+        .menu li a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            display: block;
+        }
+
+            .menu li a:hover {
+                background: #333;
+                color: #fff;
+                -moz-box-shadow: 0 3px 10px 0 #CCC;
+                -webkit-box-shadow: 0 3px 10px 0 #ccc;
+                text-shadow: 0px 0px 5px #fff;
+            }
+
+        .menu li ul {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            background-color: #fff;
+            display: none;
+        }
+
+        .menu li:hover ul, .menu li.over ul {
+            display: block;
+        }
+
+        .menu li ul li {
+            border: 1px solid #c0c0c0;
+            display: block;
+            width: 150px;
+        }
+
+
+.logo-cabecalho {
+    float: left;
+}
+
+    .logo-cabecalho a {
+        font-size: 50px;
+        font-style: italic;
+        text-decoration: none;
+        color: #000;
+        display: block;
+        padding: 20px 0 0 0;
+    }
+   
+
+ul a {
+    text-decoration: none;
+    color: #FFF;
+    text-align: left;
+    background-color: #BCB8C2;
+    padding: 10px 16px;
+    border-radius: 2px;
+    opacity: 0.8;
+    font-size: 16px;
+    display: inline-block;
+    margin: 4px;
+    line-height: 1;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.corpo {
+    position: relative;
+    overflow: hidden;
+}
+
+.artigos {
+    float: left;
+}
+
+    .artigos, .artigos:before {
+        width: 70%;
+    }
+
+        .artigos:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: #fff;
+            z-index: -1;
+            content: '';
+        }
+
+.barra-lateral {
+    float: right;
+}
+
+    .barra-lateral, .barra-lateral:before {
+        width: 30%;
+    }
+
+        .barra-lateral:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: -1;
+            background: #f1f1f1;
+        }
+
+.espacamento {
+    padding: 20px;
+}
+
+.rodape {
+    padding: 20px;
+    text-align: center;
+}
+
+input,
+select,
+textarea {
+    max-width: 430px;
+}
+
+
+.form-login {
+    max-width: 1000px;
+    width: 100%;
+    padding-top: 10em;
+    margin: 0 auto;
+    font: bold 14px sans-serif;
+    text-align: center;
+}
+
+.form-add {
+    max-width: 1000px;
+    width: 100%;
+    padding-top: 0.83em;
+    margin: 0 auto;
+    margin-left: 0.83em;
+    font: bold 14px sans-serif;
+    text-align: left;
+}
+
+
+.form-log-in-with-email {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 130px;
+    text-align: center;
+}
+
+.form-inside {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 2em;
+    text-align: center;
+}
+
+
+
+    .form-log-in-with-email .form-white-background {
+        width: 570px;
+        box-sizing: border-box;
+        background-color: #ffffff;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        padding: 60px 80px;
+        margin-bottom: 32px;
+    }
+
+.form-inside .form-white-background {
+    width: 840px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    padding: 20px 40px;
+    margin-bottom: 0.83em;
+}
+
+
+    .form-log-in-with-email .form-row {
+        text-align: left;
+        margin-bottom: 23px;
+    }
+
+    .form-inside .form-row-add {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+
+    .form-log-in-with-email .form-title-row {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+.form-inside .form-title-row {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+    .form-log-in-with-email h1 {
+        display: inline-block;
+        box-sizing: border-box;
+        color: #4c565e;
+        font-size: 24px;
+        padding: 0 30px 15px;
+        border-bottom: 2px solid #6caee0;
+        margin: 0;
+    }
+
+.form-inside h1 {
+    display: inline-block;
+    box-sizing: border-box;
+    color: #4c565e;
+    font-size: 24px;
+    padding: 0 30px 15px;
+    border-bottom: 2px solid #6caee0;
+    margin: 0;
+}
+
+    .form-log-in-with-email .form-row > label span {
+        display: inline-block;
+        box-sizing: border-box;
+        color: #5f5f5f;
+        width: 70px;
+        text-align: right;
+        padding-right: 25px;
+    }
+
+.form-inside .form-row-add > label span {
+    display: inline-block;
+    box-sizing: border-box;
+    color: #5f5f5f;
+    width: 125px;        
+}
+
+    .form-log-in-with-email input {
+        color: #5f5f5f;
+        box-sizing: border-box;
+        width: 330px;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+        padding: 12px 18px;
+        border: 1px solid #dbdbdb;
+    }
+
+.form-inside input {
+    color: #5f5f5f;
+    box-sizing: border-box;
+    width: 430px;
+    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+    padding: 6px 18px;
+    border: 1px solid #dbdbdb;
+}
+
+
+.form-inside input curto{
+    color: #5f5f5f;
+    box-sizing: border-box;
+    width: 230px;
+    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+    padding: 6px 18px;
+    border: 1px solid #dbdbdb;
+}
+
+.form-inside select{
+    color: #5f5f5f;
+    box-sizing: border-box;
+    width: 230px;
+    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+    padding: 6px 18px;
+    border: 1px solid #dbdbdb;
+}
+
+    .form-log-in-with-email button {
+        display: block;
+        border-radius: 2px;
+        background-color: #6caee0;
+        color: #ffffff;
+        font-weight: bold;
+        box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+        padding: 15px 35px;
+        border: 0;
+        margin: 55px auto 0;
+        cursor: pointer;
+    }
+
+.form-inside button {
+    display: block;
+    border-radius: 2px;
+    background-color: #6caee0;
+    color: #ffffff;
+    font-weight: bold;
+    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);
+    padding: 15px 35px;
+    border: 0;
+    margin: 0px auto 0;
+    cursor: pointer;
+}
+
+    .form-log-in-with-email .form-forgotten-password,
+    .form-log-in-with-email .form-create-an-account {
+        text-decoration: none;
+        padding: 4px 8px;
+        font-weight: normal;
+    }
+
+    .form-log-in-with-email .form-forgotten-password {
+        color: #4e9eda;
+    }
+
+    .form-log-in-with-email .form-create-an-account {
+        color: #7b9d62;
+        background-color: #d6f0c3;
+    }

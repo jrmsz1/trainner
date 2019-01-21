@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+@using (Html.BeginForm())
+{
+    <div class="form-login" id="divPrincipal">
+
+        <div class="form-log-in-with-email">
+
+            <div class="form-white-background">
+
+                <div class="form-row-add">
+                    <label>
+                        <div id="loading" style="border:1px solid red" hidden />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="chart_div" style="width: 900px; height: 500px;" />
+}
+
+
+<script type="text/javascript">
+
+
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(CarregaDados);
+    function CarregaDados() {
+        $.ajax({
+            url: '@Url.Action("AluCidGrafico", "Grafico")',
+            dataType: "json",
+            type: "GET",
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function(data) {
+                Grafico(data);
+                return false;
+            }
+        });
+        return false;
+    }
+
+    function Grafico(data) {
+
+        var dataArray = [
+            ['cidade', 'qtoalunos']
+        ];
+        $.each(data, function(i, item) {
+            dataArray.push([item.cidade, item.qtoalunos]);
+        });
+                       
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: '% de Alunos por Cidades',
+            chartArea: {
+                width: '50%'
+            },
+            colors: ['#b0120a', '#ffab91'],
+            hAxis: {
+                title: 'Totais',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Cidade'
+            }
+        };
+        //var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        //chart.draw(data, options);
+
+        //var data = new google.visualization.DataTable();
+        //data.addColumn('string', 'Column Name');
+        //data.addColumn('number', 'Column Value');
+        //for (var i = 0; i < dataValues.length; i++) {
+        //    data.addRow([dataValues[i].NomePais, dataValues[i].Total]);
+        //}
+
+        new google.visualization.PieChart(document.getElementById('chart_div')).
+            draw(data, { title: "% de Alunos por Cidades" });
+    
+
+        return false;
+    }
+</script>
+
+@section Scripts {
+    <script>
+
+      
+
+        $(document).ajaxStart(function () {
+            $("div#loading").text("Aguarde percorrendo a tabela de cidades... Este processo pode demorar um pouco...");
+            $("div#loading").show();
+        });
+
+        $(document).ajaxComplete(function () {
+            $("div#loading").text("");
+            $("div#loading").hide();
+            $("#divPrincipal").height("2px");
+        });
+
+        </script>
+    }
+

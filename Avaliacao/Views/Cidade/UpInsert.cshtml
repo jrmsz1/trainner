@@ -1,0 +1,173 @@
+﻿@model Avaliacao.Models.Cidade
+@using Avaliacao.Controllers.Util
+
+
+<h2>Cidade</h2>
+@Html.ActionLink("Voltar", null, null, null, new { href = Request.UrlReferrer })
+@using (Html.BeginForm("UpInsert", "Cidade", FormMethod.Post, new { id = "cidadeform", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.TextBox("modeid", ViewBag.modeid as string)
+
+    <div class="form-add" id="divInfo">
+
+        <div class="form-inside">
+
+            <div class="form-white-background">
+
+                <div class="form-title-row">
+                    <h1>@ViewBag.Title</h1>
+                </div>
+
+                <!-- Se Html.ValidationSummary(true, não irá apresentar os erros customizados do Controller-->
+                <!--Erros customizados do controller-->
+                @if (ViewData.ModelState.ContainsKey("CustomError"))
+                {
+                    <div style="border:1px solid red">
+                        @Html.ValidationMessage("CustomError")
+                    </div>
+                }
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cMun)
+
+                        @Html.EditorFor(model => model.cMun, new { htmlAttributes = new { onchange = "FindUF()", @style = "width: 150px;" } })
+
+                        @Html.ValidationMessageFor(model => model.cMun)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.uf)
+                        @Html.DropDownListFor(model => model.uf,
+ new List<SelectListItem>
+                            {
+                            new SelectListItem { Value = "AC" , Text = "Acre" },
+                            new SelectListItem { Value = "AL" , Text = "Alagoas" },
+                            new SelectListItem { Value = "AM" , Text = "Amazonas" },
+                            new SelectListItem { Value = "AP" , Text = "Amapá" },
+                            new SelectListItem { Value = "BA" , Text = "Bahia" },
+                            new SelectListItem { Value = "CE" , Text = "Ceará" },
+                            new SelectListItem { Value = "DF" , Text = "Distrito Federal" },
+                            new SelectListItem { Value = "ES" , Text = "Espírito Santo" },
+                            new SelectListItem { Value = "GO" , Text = "Goiás" },
+                            new SelectListItem { Value = "MA" , Text = "Maranhão" },
+                            new SelectListItem { Value = "MG" , Text = "Minas Gerais" },
+                            new SelectListItem { Value = "MS" , Text = "Mato Grosso do Sul" },
+                            new SelectListItem { Value = "MT" , Text = "Mato Grosso" },
+                            new SelectListItem { Value = "PA" , Text = "Pará" },
+                            new SelectListItem { Value = "PB" , Text = "Paraíba" },
+                            new SelectListItem { Value = "PE" , Text = "Pernambuco" },
+                            new SelectListItem { Value = "PI" , Text = "Piauí" },
+                            new SelectListItem { Value = "PR" , Text = "Paraná" },
+                            new SelectListItem { Value = "RJ" , Text = "Rio de Janeiro" },
+                            new SelectListItem { Value = "RN" , Text = "Rio Grande do Norte" },
+                            new SelectListItem { Value = "RO" , Text = "Rondônia" },
+                            new SelectListItem { Value = "RR" , Text = "Roraima" },
+                            new SelectListItem { Value = "RS" , Text = "Rio Grande do Sul" },
+                            new SelectListItem { Value = "SC" , Text = "Santa Catarina" },
+                            new SelectListItem { Value = "SE" , Text = "Sergipe" },
+                            new SelectListItem { Value = "SP" , Text = "São Paulo" },
+                            new SelectListItem { Value = "TO" , Text = "Tocantins" },
+                            new SelectListItem { Value = "EX" , Text = "Exterior" }
+                            })
+                        @Html.ValidationMessageFor(model => model.uf)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.xMun)
+                        @Html.EditorFor(model => model.xMun)
+                        @Html.ValidationMessageFor(model => model.xMun)
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <label>
+                        @Html.SpanDisplayFor(model => model.cep)
+                        @Html.EditorFor(model => model.cep, new { htmlAttributes = new { @style = "width: 150px;" } })
+                        @Html.ValidationMessageFor(model => model.cep)
+                    </label>
+                </div>
+
+
+                <div class="form-row-add">
+                    <button type="button" onclick="SendForm()">Confirmar</button>
+                </div>
+
+                @if (@ViewBag.Message != null)
+                {
+                    <div style="border:1px solid red">
+                        @ViewBag.Message
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+
+}
+
+
+@section Scripts {
+    <script>
+
+        $('#xMun').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]*$"); //Daria para fazer um Html.RegexFor
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        $(document).ready(function () {
+
+            $("#modeid").hide();
+            $("#cep").inputmask("mask", { "mask": "99.999-999" });
+            $("#cMun").inputmask("mask", { "mask": "9999999" });
+
+            if ($("#modeid").val().indexOf("DEL") == 0) {
+                $("#divInfo :input:not(:button)").attr("disabled", true);
+            }
+        });
+
+
+        function SendForm() {
+
+            $("#cep").inputmask("mask", { "mask": "" });
+
+            $("#cidadeform").submit();
+        };
+
+        function FindUF() {
+            var estadoId = $('#cMun').val().length;
+
+            if (estadoId >= 2) {
+
+                var codUF = $('#cMun').val().substring(0, 2);
+                $.ajax({
+                    url: '/Cidade/FindEstado',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { estado: codUF },
+                    success: function (sigla) {
+
+                        $('#uf').val(sigla.uf);
+
+                    }
+                });
+            }
+        }
+
+    </script>
+}

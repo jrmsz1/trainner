@@ -1,0 +1,61 @@
+﻿<!--model IEnumerable<Avaliacao.Models.Cidade> -->
+@model PagedList.IPagedList<Avaliacao.Models.Aluno.ListAlunos>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@using Avaliacao.Controllers.Util@{
+    ViewBag.Title = "Lista Aluno";
+}
+<h2>@ViewBag.Title</h2>
+<p>
+    <h5> @Html.ActionLink("Voltar", null, null, null, new { href = Request.UrlReferrer })  -   @Html.ActionLink("Novo Aluno", "UpInsert", new { modeid = "INS|" + 0 })</h5>
+</p>
+
+<h3>@ViewBag.Message</h3>
+
+@using (Html.BeginForm("Lista", "Aluno", FormMethod.Post, new { id = "formListaAluno", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <p>
+        Localizar por :
+        @Html.DropDownListModel(null, new { @onchange = "tipoFiltro()" })
+        @Html.TextBox("strCriterio", ViewBag.CurrentFilter as string)
+        <button type="button" onclick="Pesquisar()">Pesquisar</button>
+    </p>
+
+    <div class="form-add" id="TabelaAjax">
+
+        <div class="form-inside">
+
+            <div class="form-white-background">
+
+                <div class="form-row-add">
+                    <label>
+
+                        @Html.DisplayGridModel(Model)
+
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <p>
+        <span id="paginacao">
+            Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+        </span>
+    </p>
+
+    <div id="listapaginacao">
+        <!--Existe um problema que deve ser tratado, por causa do ViewBag.CurrentFilter, neste caso ele deve adicionar o tipo -->
+        @Html.PagedListPager(Model, page => Url.Action("Lista",
+             new { sortOrder = ViewBag.CurrentSort, strCriterio = ViewBag.CurrentFilter , page}))
+    </div>
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/funcoesPesquisa.js")"></script>
+
+}

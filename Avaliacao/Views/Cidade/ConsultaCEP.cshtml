@@ -1,0 +1,156 @@
+﻿@using Avaliacao.Controllers.Util
+
+<h2>Cidade -  @Html.ActionLink("Voltar", null, null, null, new { href = Request.UrlReferrer })</h2>
+
+@using (Html.BeginForm("ConsultaCep", "Cidade", FormMethod.Get, new { id = "consultacepform", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-add">
+
+        <div class="form-inside">
+
+            <div class="form-white-background">
+
+                <div class="form-title-row">
+                    <h1>Consulta CEP</h1>
+                </div>
+
+                <!-- Se Html.ValidationSummary(true, não irá apresentar os erros customizados do Controller-->
+                <!--Erros customizados do controller-->
+                @if (ViewData.ModelState.ContainsKey("CustomError"))
+                {
+                    <div style="border:1px solid red">
+                        @Html.ValidationMessage("CustomError")
+                    </div>
+                }
+
+                <div class="form-row">
+                    <label>
+                        <span>CEP</span>
+                        <input type="text" name="cep" id="cep" style="width: 150px;" />
+                    </label>
+                </div>
+
+                <div class="form-row-add">
+                    <br />
+                    <button type="button" onclick="FindCEP()">Consultar</button>
+
+                    <div id="loading"  style="border:1px solid red" hidden/>                      
+                   
+                </div>
+
+                <div id="divHidden">
+                    <br />
+                    <div class="form-title-row">
+                        <h1>Resposta Correios</h1>
+                    </div>
+
+                    <div class="form-row-add">
+                        <label>
+                            <span>Endereço</span>
+                            <input type="text" id="end" readonly />
+                        </label>
+                    </div>
+                    <div class="form-row-add">
+                        <label>
+                            <span>Complemento</span>
+                            <input type="text" id="complemento" readonly />
+                        </label>
+                    </div>
+                    <div class="form-row-add">
+                        <label>
+                            <span>Bairro</span>
+                            <input type="text" id="bairro" readonly />
+                        </label>
+                    </div>
+                    <div class="form-row-add">
+                        <label>
+                            <span>Cidade</span>
+                            <input type="text" id="cidade" readonly />
+                        </label>
+                    </div>
+                    <div class="form-row-add">
+                        <label>
+                            <span>UF</span>
+                            <input type="text" id="uf" readonly />
+                        </label>
+                    </div>
+                </div>
+
+                @if (@ViewBag.Message != null)
+                {
+                    <div style="border:1px solid red">
+                        @ViewBag.Message
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+   
+}
+
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+
+            $("#cep").inputmask("mask", { "mask": "99.999-999" });
+            $("#divHidden").hide();
+            $('#cep').focus();
+        });
+
+        $(document).ajaxStart(function () {
+            $("div#loading").text("Pesquisando nos correios...");
+            $("div#loading").show();
+        });
+
+        $(document).ajaxComplete(function () {
+            $("div#loading").text("");
+            $("div#loading").hide();
+        });
+
+
+        function FindCEP() {
+
+            var cepId = $('#cep').val().length;
+
+            if (cepId == 10) {
+
+                $("#divHidden").hide();
+
+                var cep = $('#cep').val();
+
+                $.ajax({
+                    url: '/Cidade/FindCEP',
+                    type: "GET",
+                    dataType: "JSON",
+                    async: true,
+                    data: { cepParam: cep },
+                    success: function (resposta) {
+
+                        var correios = JSON.parse(resposta);
+
+                        $("#end").val(correios.end);
+                        $("#complemento").val(correios.complemento );
+                        $("#bairro").val(correios.bairro);
+                        $("#cidade").val(correios.cidade);
+                        $("#uf").val(correios.uf);
+                        $("#divHidden").show();
+                    }
+                });
+
+            } else {
+
+                Alert("Atenção digite o CEP corretamente.")
+                $('#cep').focus();
+
+            }
+        }
+
+    </script>
+}
